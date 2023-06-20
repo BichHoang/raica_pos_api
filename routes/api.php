@@ -1,6 +1,5 @@
 <?php
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,6 +13,37 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+Route::group([
+    'middleware' => 'api',
+    'namespace' => 'App\Http\Controllers\Api'
+], function () {
+    Route::get('/403', function () {
+        $res = [
+            'message' => 'Not authorized.',
+            'code' => 403,
+            'status_code' => App\Utils\HttpCodeTransform::STATUS_CODE[403],
+        ];
+
+        return response()->json($res, 403);
+    })->name('403');
+
+    Route::group([
+        'prefix' => 'auth',
+    ], function ($router) {
+        $router->post('/login', 'AuthController@login');
+        $router->post('/register', 'AuthController@register');
+        $router->post('/forgot-password', 'PasswordController@sendPasswordResetEmail');
+    });
+
+    Route::group([
+        'middleware' => 'auth:sanctum',
+    ], function () {
+        Route::group([
+            'prefix' => 'auth',
+        ], function ($router) {
+            $router->delete('/logout', 'AuthController@logout');
+            $router->get('/me', 'AuthController@userProfile');
+            $router->post('/reset-password', 'PasswordController@resetPassword');
+        });
+    });
 });
