@@ -7,4 +7,5 @@ return [
     'deleted' => 'Deleted successfully!',
     'uploaded' => 'Uploaded success!',
     'bad_request' => 'Bad request!',
+    'not_found' => 'Data not found!',
 ];

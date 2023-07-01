@@ -13,3 +13,8 @@ php artisan db:seed
 ```
 php artisan serve
 ```
+
+4. Update:
+```
+php artisan migrate:refresh --seed
+```

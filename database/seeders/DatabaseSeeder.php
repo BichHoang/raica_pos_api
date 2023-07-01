@@ -69,5 +69,11 @@ class DatabaseSeeder extends Seeder
         $user->assignRole($user_role);
         $user->givePermissionTo($user_permission);
         $user_role->givePermissionTo($user_permission);
+
+        $this->call([
+            StoreSeeder::class,
+            CategorySeeder::class,
+            MenuItemSeeder::class,
+        ]);
     }
 }

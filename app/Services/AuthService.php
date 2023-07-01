@@ -4,9 +4,7 @@
 namespace App\Services;
 
 use App\Models\User;
-use App\Repository\AuthRepository;
-use App\Http\Helpers\Helper;
-use Prettus\Validator\Exceptions\ValidatorException;
+use App\Repositories\AuthRepository;
 
 class AuthService
 {

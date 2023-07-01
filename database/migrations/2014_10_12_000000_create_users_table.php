@@ -23,6 +23,8 @@ class CreateUsersTable extends Migration
             $table->rememberToken();
             $table->timestamp('deleted_at')->nullable();
             $table->timestamps();
+
+            $table->index(['id', 'full_name', 'email', 'phone']);
         });
     }
 

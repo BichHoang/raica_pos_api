@@ -45,5 +45,14 @@ Route::group([
             $router->get('/me', 'AuthController@userProfile');
             $router->post('/reset-password', 'PasswordController@resetPassword');
         });
+
+        // Store
+        Route::resource('stores', 'StoreController', ['only' => ['index', 'store', 'show', 'update', 'destroy']]);
+
+        // Category
+        Route::resource('categories', 'CategoryController', ['only' => ['index', 'store', 'show', 'update', 'destroy']]);
+
+        // MenuItem
+        Route::resource('menu-items', 'MenuItemController', ['only' => ['index', 'store', 'show', 'update', 'destroy']]);
     });
 });
