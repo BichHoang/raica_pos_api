@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Models\Store;
 use App\Services\StoreService;
 use Illuminate\Http\Request;
 use App\Http\Requests\Store\CreateStoreRequest;
+use App\Http\Requests\Store\UpdateStoreRequest;
 use Exception;
 
 class StoreController extends BaseController
@@ -54,9 +54,20 @@ class StoreController extends BaseController
         }
     }
 
-    public function update(Request $request, Store $store)
+    public function update(UpdateStoreRequest $request, $id)
     {
-        //
+        try {
+            $store = $request->validated();
+            $store = $this->storeService->update($store, $id);
+
+            return $this->sendResponseSuccess(
+                ['store' => $store], __('common.updated')
+            );
+        } catch (Exception $ex) {
+            return $this->sendResponseError([
+                'message' => $ex->getMessage(),
+            ], __('common.not_found'), 404);
+        }
     }
 
     public function destroy($id)

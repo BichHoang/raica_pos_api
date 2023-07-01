@@ -30,6 +30,11 @@ class MenuItemService
         return $this->repository->find($id);
     }
 
+    public function update($menuItem, $id)
+    {
+        return $this->repository->update($menuItem, $id);
+    }
+
     public function delete($id)
     {
         return $this->repository->delete($id);

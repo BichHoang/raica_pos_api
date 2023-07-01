@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Requests\MenuItem\StoreMenuItemRequest;
 use App\Http\Requests\MenuItem\UpdateMenuItemRequest;
-use App\Models\MenuItem;
 use App\Services\MenuItemService;
 use Exception;
 use Illuminate\Http\Request;
@@ -21,11 +20,11 @@ class MenuItemController extends BaseController
     public function index(Request $request)
     {
         $limit = $request->get('limit', 10);
-        $stores = $this->menuItemService->all($limit);
+        $menuItems = $this->menuItemService->all($limit);
 
         return $this->sendResponseSuccess(
             [
-                'stores' => $stores,
+                'menuItems' => $menuItems,
             ], __('common.created')
         );
     }
@@ -43,10 +42,10 @@ class MenuItemController extends BaseController
     public function show($id)
     {
         try {
-            $store = $this->menuItemService->show($id);
+            $menuItem = $this->menuItemService->show($id);
 
             return $this->sendResponseSuccess(
-                ['store' => $store],
+                ['menuItem' => $menuItem],
             );
         } catch (Exception $ex) {
             return $this->sendResponseError([
@@ -55,9 +54,20 @@ class MenuItemController extends BaseController
         }
     }
 
-    public function update(UpdateMenuItemRequest $request, MenuItem $menuItem)
+    public function update(UpdateMenuItemRequest $request, $id)
     {
-        //
+        try {
+            $menuItem = $request->validated();
+            $menuItem = $this->menuItemService->update($menuItem, $id);
+
+            return $this->sendResponseSuccess(
+                ['menuItem' => $menuItem], __('common.updated')
+            );
+        } catch (Exception $ex) {
+            return $this->sendResponseError([
+                'message' => $ex->getMessage(),
+            ], __('common.not_found'), 404);
+        }
     }
 
     public function destroy($id)

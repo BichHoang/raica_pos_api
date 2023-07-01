@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Requests\Category\StoreCategoryRequest;
 use App\Http\Requests\Category\UpdateCategoryRequest;
-use App\Models\Category;
 use App\Services\CategoryService;
 use Exception;
 use Illuminate\Http\Request;
@@ -43,10 +42,10 @@ class CategoryController extends BaseController
     public function show($id)
     {
         try {
-            $store = $this->categoryService->show($id);
+            $category = $this->categoryService->show($id);
 
             return $this->sendResponseSuccess(
-                ['store' => $store],
+                ['category' => $category],
             );
         } catch (Exception $ex) {
             return $this->sendResponseError([
@@ -55,9 +54,20 @@ class CategoryController extends BaseController
         }
     }
 
-    public function update(UpdateCategoryRequest $request, Category $category)
+    public function update(UpdateCategoryRequest $request, $id)
     {
-        //
+        try {
+            $category = $request->validated();
+            $category = $this->categoryService->update($category, $id);
+
+            return $this->sendResponseSuccess(
+                ['category' => $category], __('common.updated')
+            );
+        } catch (Exception $ex) {
+            return $this->sendResponseError([
+                'message' => $ex->getMessage(),
+            ], __('common.not_found'), 404);
+        }
     }
 
     public function destroy($id)

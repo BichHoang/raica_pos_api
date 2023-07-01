@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\Category;
+namespace App\Http\Requests\Store;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateCategoryRequest extends FormRequest
+class UpdateStoreRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,8 +25,12 @@ class UpdateCategoryRequest extends FormRequest
     {
         return [
             'name' => 'required|string',
-            'store_id' => 'required|int|exists:stores,id',
-            'category_id' => 'nullable|int|exists:categories,id',
+            'address' => 'required|string',
+            'phone' => 'required|string',
+            'province_id' => 'nullable|int|exists:provinces,id',
+            'city_id' => 'nullable|int|exists:cities,id',
+            'district_id' => 'nullable|int|exists:districts,id',
+            'ward_id' => 'nullable|int|exists:wards,id',
         ];
     }
 }

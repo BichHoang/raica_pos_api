@@ -30,6 +30,11 @@ class CategoryService
         return $this->repository->find($id);
     }
 
+    public function update($category, $id)
+    {
+        return $this->repository->update($category, $id);
+    }
+
     public function delete($id)
     {
         return $this->repository->delete($id);
